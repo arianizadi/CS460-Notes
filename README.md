@@ -63,7 +63,7 @@ The following breakdown will be used in calculating the student’s grade:
 
 Course grades are calculated using this scale:
 
-- >91 A
+- \>91 A
 - 86-90 A-
 - 81-86 B+
 - 76-80 B
