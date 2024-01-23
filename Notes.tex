@@ -1,6 +1,7 @@
 \documentclass[twocolumn]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[skip=20pt, indent=0pt]{parskip}
+\usepackage[skip=6pt, indent=0pt]{parskip}
+\usepackage{graphicx}
 
 \title{CS 460 {-} Compilers}
 \author{Arian Izadi}
@@ -10,6 +11,68 @@
 
 \maketitle
 
-\section*{January 22, 2024}
+\section{Jan 22}
+
+\subsection{Languages}
+
+Syntax is the rules for what a syntacically correct program looks like.
+Semantics is the meaining of a program.
+
+When does it matter the order of evaluation (right to left vs left to right)?
+When the code has side effects, an example of this is postfix vs prefix increment (a++ vs ++a).
+
+Compilers for a language L, move from front end $\to$ intermediate representation $\to$ back end.
+
+\begin{itemize}
+  \item Front end: FIND IN BOOK
+  \item Intermediate: FIND IN BOOK
+  \item Back end: FIND IN BOOK
+\end{itemize}
+
+\subsection{Lexical Analysis \& Scanning}
+
+Lexical analysis, a scanner, is the process of converting a stream of characters into a stream of tokens.
+
+\begin{enumerate}
+  \item Find all terminals in the grammar.
+  \item Write the Scanner.
+        \begin{enumerate}
+          \item Do we use a DFA, NFA, or PDA{?}
+          \item Look at token types. All tokens can be expressed by a regular expression.
+                \begin{enumerate}
+                  \item Symbols: Semicolon, commas, etc.
+                  \item Keywords: for, while, etc.
+                  \item Variables: x, y, etc.
+                  \item Numbers: 1, 3.14, 0{x}64, etc.
+                \end{enumerate}
+        \end{enumerate}
+\end{enumerate}
+
+Chomsky Language Hierarchy
+
+\begin{itemize}
+  \item Type 0: Unrestricted (Turing Machines)
+  \item Type 1: Context Sensitive
+  \item Type 2: Context Free (PDA)
+  \item Type 3: Regular Expressions (NFA, DFA)
+\end{itemize}
+
+Both RE and CFG have 1 non-terminal on the left of any combination of terminals and non-terminals on the right.
+
+\textbf{Example 1:}
+
+$S \to X \quad$
+$X \to aXb | d \quad$
+\hfill
+not regular: $a^n d b^n$
+
+\textbf{Example 2:}
+
+$S \to X \quad$
+$X \to aX | b \quad$
+\hfill
+regular: $a^* b$
+
+
 
 \end{document}
