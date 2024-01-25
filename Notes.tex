@@ -2,6 +2,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage[skip=6pt, indent=0pt]{parskip}
 \usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning, arrows}
 
 \title{CS 460 {-} Compilers}
 \author{Arian Izadi}
@@ -11,12 +13,10 @@
 
 \maketitle
 
-\section{Jan 22}
+\section{Languages}
 
-\subsection{Languages}
-
-Syntax is the rules for what a syntacically correct program looks like.
-Semantics is the meaining of a program.
+Syntax is the rules for what a syntactically correct program looks like.
+Semantics is the meaning of a program.
 
 When does it matter the order of evaluation (right to left vs left to right)?
 When the code has side effects, an example of this is postfix vs prefix increment (a++ vs ++a).
@@ -48,7 +48,9 @@ Lexical analysis, a scanner, is the process of converting a stream of characters
         \end{enumerate}
 \end{enumerate}
 
-Chomsky Language Hierarchy
+\pagebreak
+
+\paragraph*{Chomsky Language Hierarchy}
 
 \begin{itemize}
   \item Type 0: Unrestricted (Turing Machines)
@@ -73,6 +75,52 @@ $X \to aX | b \quad$
 \hfill
 regular: $a^* b$
 
+\textbf{Example 3:}
+
+$S \to X \quad$
+$X \to aY | \epsilon \quad$
+$Y \to bX \quad$
+\hfill
+regular: $(ab){^*}$
+
+An NFA for recognizing tokens, construct NFA for each construct of RE\@.
+
+$\mathcal{E}$:
+
+\begin{tikzpicture}[>=stealth, node distance=3cm, on grid, auto]
+  \node[state, initial] (q1) {$q_1$};
+  \node[state, accepting, right=of q1] (q2) {$q_2$};
+  \path[->] (q1) edge node {$\epsilon$} (q2);
+\end{tikzpicture}
+
+$a \epsilon \Sigma$:
+
+\begin{tikzpicture}[>=stealth, node distance=3cm, on grid, auto]
+  \node[state, initial] (q1) {$q_1$};
+  \node[state, accepting, right=of q1] (q2) {$q_2$};
+  \path[->] (q1) edge node {$a$} (q2);
+\end{tikzpicture}
+
+\pagebreak
+
+% $s | t$:
+
+% \begin{tikzpicture}[>=stealth, node distance=2cm, on grid, auto]
+%   \node[state, initial] (q1) {$q_1$};
+%   \node[state, right=of q1] (q2) {$q_2$};
+%   \node[state, accepting, right=of q2] (q3) {$q_3$};
+%   \node[state, below=of q2] (q4) {$q_4$};
+
+%   \path[->] (q1) edge node[above] {$\epsilon$} (q2);
+%   \path[->] (q2) edge node[above] {$\epsilon$} (q3);
+%   \path[->] (q1) edge node[left] {$\epsilon$} (q4);
+%   \path[->] (q4) edge node[right] {$\epsilon$} (q3);
+% \end{tikzpicture}
+
+
+Any RE can be turned into an NFA using these rules.
+If all the tokens of a language are represented by RE's, $r_1, \dots, r_n$.
+Create an NFA for each RE\@.
 
 
 \end{document}
