@@ -63,23 +63,27 @@ Both RE and CFG have 1 non-terminal on the left of any combination of terminals 
 
 \textbf{Example 1:}
 
-$S \to X \quad$
-$X \to aXb | d \quad$
+$S \to X$
+\hfill
+$X \to aXb | d$
 \hfill
 not regular: $a^n d b^n$
 
 \textbf{Example 2:}
 
-$S \to X \quad$
-$X \to aX | b \quad$
+$S \to X$
+\hfill
+$X \to aX | b$
 \hfill
 regular: $a^* b$
 
 \textbf{Example 3:}
 
-$S \to X \quad$
-$X \to aY | \epsilon \quad$
-$Y \to bX \quad$
+$S \to X$
+\hfill
+$X \to aY | \epsilon$
+\hfill
+$Y \to bX$
 \hfill
 regular: $(ab){^*}$
 
@@ -122,5 +126,125 @@ Any RE can be turned into an NFA using these rules.
 If all the tokens of a language are represented by RE's, $r_1, \dots, r_n$.
 Create an NFA for each RE\@.
 
+
+\section{Parsing}
+
+\subsection{Types of Parsers}
+
+\begin{itemize}
+  \item $LL(k)$ $-$ leftmost derivation
+        \begin{itemize}
+          \item (Hard Explain) Always develop the leftmost non terminal in a sentential form.
+          \item Above means: Start at the start symbol and work towards the input.
+        \end{itemize}
+  \item $LR(k)$ $-$ rightmost derivation
+        \begin{itemize}
+          \item Reverse rightmost derivation.
+          \item Above means: Start at input and work backwards to the start symbol.
+        \end{itemize}
+\end{itemize}
+
+\paragraph*{Types of $LL(k)$ parsers:}
+
+\begin{itemize}
+  \item $LL(0)$ $-$ No look ahead and no left recursion.
+  \item $LL(1)$ $-$ One look ahead and no left recursion.
+  \item $LL(k)$ $-$ $k$ look ahead and no left recursion.
+\end{itemize}
+
+% example
+\paragraph*{Example 1: $a^* b^*$}
+
+% capital epsilon
+
+$\lambda(a^* b^*) = {\mathcal{\epsilon}, a, b, aa, ab, bb, \dots}$
+
+$S \to A$
+\hfill
+$A \to aA | B$
+\hfill
+$B \to bB | \mathcal{\epsilon}$
+
+Try $w = aabb$:
+
+$S \to_{LM} A \to_{LM} aA \to_{LM} aaA \to_{LM} aaB \to_{LM} aabB \to_{LM} aabbB \to_{LM} aabb$
+
+What if B could generate strings starting with an $a$?
+
+$S \to A$
+\hfill
+$A \to aA | B$
+\hfill
+$B \to bB | a | \mathcal{\epsilon}$
+
+Try $w = aabb$:
+
+It cannot be parsed by an $LL(1)$ parser.
+
+\pagebreak
+
+\paragraph*{A is not $LL(1)$ when}
+\begin{itemize}
+  \item $\exists w_1 \in \lambda (\alpha _1) \hat{}$
+  \item $\exists w_2 \in \lambda (\alpha _2)$
+  \item $w_1 = aw_1 \hat{}$
+  \item $w_2 = aw_2$
+\end{itemize}
+
+\paragraph*{Example 2:}
+A set representing tokens that a sentential form can start with: Call it $FIRST(\alpha)$
+
+\begin{enumerate}
+  \item $\mathcal{\epsilon}: $ FIRST ($\mathcal{\epsilon}$) = $\{\mathcal{\epsilon}\}$
+  \item $a\in \Sigma: $ FIRST ($a$) = $\{a\}$
+  \item a mixed string: $Y = Y_1 Y_2 \dots Y_n$
+        \begin{enumerate}
+          \item FIRST ($Y_1 \dots Y_n$) $\supseteq$ FIRST ($Y_1$) \ $\{\mathcal{\epsilon}\}$
+          \item if $\mathcal{\epsilon} \exists$ FIRST ($Y_1$):
+                \begin{enumerate}
+                  \item $Y_1, Y_2, \dots, Y_n \to \mathcal{\epsilon}$
+                  \item $Y_1, Y_2, \dots, Y_n \to Y_2, \dots, Y_n$
+                \end{enumerate}
+        \end{enumerate}
+\end{enumerate}
+
+
+\paragraph*{Example 3:}
+
+$X \to X_1 | \dots | X_m$
+
+FIRST ($X$) = FIRST ($X_1$) $\cup$ FIRST ($X_2$) $\cup \dots \cup$ FIRST ($X_m$)
+
+% \begin{center}
+%   \begin{tabular}{|c|c|}
+%     FIRST (A) & FIRST (B) \\
+%     \hline
+%     4         & 5         \\
+%     \hline
+%     7         & 8         \\
+%     \hline
+%     9         & 10
+%   \end{tabular}
+% \end{center}
+
+\paragraph*{Example 4: }
+General Case
+
+For $A \to \alpha _1 | \alpha _2 | \dots | \alpha _n$
+
+if $\exists i, j$ such that $i \neq j$ and FIRST ($\alpha _i$) $\cap$ FIRST ($\alpha _j$) $\neq \emptyset$ then $A$ is not $LL(1)$.
+
+\textbf{MUST BE DONE PAIRWISE, only needs to exist one pair to not be $LL(1)$.}
+
+$\forall i, j: i \neq j \string^ (1 <= i, j <= n): FIRST (\alpha _i) \cap FIRST (\alpha _j) = \emptyset$ then $A$ is probably (necessary, but not sufficient) $LL(1)$.
+
+\paragraph*{Example 5:}
+General Case
+
+For $A \to \alpha _1 | \alpha _2 | \dots | \alpha _n$
+
+\vdots
+
+$A_m \to \alpha _{m1} | \alpha _{m2} | \dots | \alpha _{mn_m}$
 
 \end{document}
