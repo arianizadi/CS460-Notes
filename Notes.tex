@@ -157,7 +157,7 @@ Create an NFA for each RE\@.
 
 % capital epsilon
 
-$\lambda(a^* b^*) = {\mathcal{\epsilon}, a, b, aa, ab, bb, \dots}$
+$\delta(a^* b^*) = {\mathcal{\epsilon}, a, b, aa, ab, bb, \dots}$
 
 $S \to A$
 \hfill
@@ -185,10 +185,8 @@ It cannot be parsed by an $LL(1)$ parser.
 
 \paragraph*{A is not $LL(1)$ when}
 \begin{itemize}
-  \item $\exists w_1 \in \lambda (\alpha _1) \hat{}$
-  \item $\exists w_2 \in \lambda (\alpha _2)$
-  \item $w_1 = aw_1 \hat{}$
-  \item $w_2 = aw_2$
+  \item $\exists w_1 \in \lambda (\alpha _1)$ or $\exists w_2 \in \lambda (\alpha _2)$
+  \item $w_1 = aw_1$ or $w_2 = aw_2$
 \end{itemize}
 
 \paragraph*{Example 2:}
@@ -246,5 +244,116 @@ For $A \to \alpha _1 | \alpha _2 | \dots | \alpha _n$
 \vdots
 
 $A_m \to \alpha _{m1} | \alpha _{m2} | \dots | \alpha _{mn_m}$
+
+\newpage
+
+\textbf{Example 6:}
+
+$A \to B | C$
+
+\vdots
+
+$B \to \dots$
+
+$C \to \dots$
+
+FIRST ($B$) = \{a, b\}
+FIRST ($C$) = \{c, f\}
+
+$w = a \beta$ where $a \in \Sigma$ and $\beta \in \Sigma ^*$
+
+* $a$ is the lookahead token.
+
+$A \to _{LM} B \to _{LM} aX$
+
+* $aX$ matches $a \beta$, so we can derive $\beta$ from $X$.
+
+\subsection{Grammar Transformation}
+
+\subsubsection{Left vs Right Recursion}
+
+$A \to Aa | b$
+
+$\delta(A) = \{b, ba, baa, \dots\} = ba^*$
+
+FIRST ($A$) = \{b\}
+FIRST ($Aa$) = \{b\}
+
+* Both have $b \to $ and is not $LL(1)$.
+
+* Just make it right recursive.
+
+$A \to bA'$
+
+$A' \to aA' | \mathcal{\epsilon}$
+
+\textbf{In General:}
+
+$A \to A \alpha _1 | A \alpha _2 | \dots | A \alpha _n | \beta _1 | \beta _2 | \dots | \beta _m$
+
+$\delta(A) = (B _1 | \dots | B _n) (\alpha _1 | \dots | \alpha _n) $
+
+$A \to \beta _1 A' | \dots | \beta _m A'$
+
+$A' \to \alpha _1 A' | \dots | \alpha _n A' | \mathcal{\epsilon}$
+
+\textbf{Example 4.6:}
+
+$E \to E + b | b$ similar to $A \to A \alpha | \beta$
+
+$E \to bE'$
+
+$E' \to + bE' | \mathcal{\epsilon}$
+
+\newpage
+
+\textbf{Example 4.7:}
+
+$E \to E + b | E - c | b | C$ similar to $A \to A \alpha _1 | A \alpha _2 | \beta _1 | \beta _2$
+
+$E \to bE' | CE'$
+
+$E' \to + bE' | - cE' | \mathcal{\epsilon}$
+
+\subsubsection{Common Subexpressions}
+
+\textbf{Example 4.8:}
+
+$A \to abC | abD$
+
+* is this LL (1)? 
+
+No, because FIRST ($abC$) $\cap$ FIRST ($abD$) $\neq \emptyset$.
+
+* if we change it to $A \to abA'$ and $A' \to c | D$, then it is LL (1).
+
+* is this LL (1)? 
+
+Only if FIRST ($c$) $\cap$ FIRST ($D$) $= \emptyset$.
+
+\textbf{For the following:}
+
+$A \to A _1 | \dots | A _n$
+
+Let $\alpha$ be the longest common prefix of $A _1, \dots, A _n$ such that $A _i = \alpha A' _i$. 
+Then $A \to \alpha A'$ and $A' \to A _1 | \dots | A _n$.
+
+\subsubsection{Grammar Ambiguity}
+
+Definition: A grammar is ambiguous if there exists a string $w$ such that there are two or more different parse trees for the same string.
+
+$A \to aA | bA | c$ with $w = ababc$.
+
+$A \to aA \to abA \to abaA \to ababA \to ababc$
+
+\textbf{Simple Example:}
+
+$A \to aA | a | \mathcal{\epsilon}$
+
+\textbf{Example 4.9:}
+
+$E \to E + E | E - E | id$ is this ambiguous?
+
+Yes, because $id + id - id$ can be parsed as $(id + id) - id$ or $id + (id - id)$.
 
 \end{document}
