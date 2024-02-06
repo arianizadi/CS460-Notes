@@ -356,4 +356,77 @@ $E \to E + E | E - E | id$ is this ambiguous?
 
 Yes, because $id + id - id$ can be parsed as $(id + id) - id$ or $id + (id - id)$.
 
+\newpage
+
+\textbf{PHASE 2 ADVICE:} AST is never the answer to the left hand side, use a subclass of it.
+
+What if we want +, -, *, /?
+
+$E \to E + E | E - E | E * E | E / E | id$
+
+Consider $id + id * id$.
+
+* is higher precedence than +, so $id + (id * id)$.
+
+When dealing with precedence, the lower precedence should be higher in the parse tree.
+
+$E \to E + T | E - T | T$
+
+$T \to T * F | T / F | F$
+
+$F \to id | (E)$
+
+* The bracket is the highest precedence.
+
+* This is also bad because it is left recursive.
+
+\textbf{Eliminate Left Recursion:}
+
+$E \to TE'$
+
+$E' \to + TE' | - TE' | \mathcal{\epsilon}$
+
+$T \to FT'$
+
+$T' \to * FT' | / FT' | \mathcal{\epsilon}$
+
+$F \to id | (E)$
+
+
+\subsection{Recursive Descent Parsing}
+
+$A \to B | C$
+
+$B \to b | \epsilon$
+
+$C \to c$
+
+* lookahead = \$
+
+$A \to B \to \epsilon$
+
+\begin{verbatim}
+  parse_x();
+  parse_y();
+  match('a');
+  parse_z();
+\end{verbatim}
+
+\newpage
+
+\begin{verbatim}
+  parse_A() {
+    if (lookahead == 'b') {
+      parse_B();
+    } else if (lookahead == 'c') {
+      parse_C();
+    } else {
+      // will not check error vs epsilon
+      // this is a problem
+      // if none of alpha i are epsilon
+    }
+  }
+\end{verbatim}
+
+
 \end{document}
