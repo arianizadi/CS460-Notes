@@ -321,13 +321,13 @@ $E' \to + bE' | - cE' | \mathcal{\epsilon}$
 
 $A \to abC | abD$
 
-* is this LL (1)? 
+* is this LL (1)?
 
 No, because FIRST ($abC$) $\cap$ FIRST ($abD$) $\neq \emptyset$.
 
 * if we change it to $A \to abA'$ and $A' \to c | D$, then it is LL (1).
 
-* is this LL (1)? 
+* is this LL (1)?
 
 Only if FIRST ($c$) $\cap$ FIRST ($D$) $= \emptyset$.
 
@@ -335,7 +335,7 @@ Only if FIRST ($c$) $\cap$ FIRST ($D$) $= \emptyset$.
 
 $A \to A _1 | \dots | A _n$
 
-Let $\alpha$ be the longest common prefix of $A _1, \dots, A _n$ such that $A _i = \alpha A' _i$. 
+Let $\alpha$ be the longest common prefix of $A _1, \dots, A _n$ such that $A _i = \alpha A' _i$.
 Then $A \to \alpha A'$ and $A' \to A _1 | \dots | A _n$.
 
 \subsubsection{Grammar Ambiguity}
@@ -428,5 +428,13 @@ $A \to B \to \epsilon$
   }
 \end{verbatim}
 
+\subsection{Rules for Follow Sets}
+
+\begin{enumerate}
+  \item if $S$ is the start symbol, then $\$ \in$ FOLLOW ($S$)
+  \item if $A \to \alpha B \beta$ then FIRST ($\beta$) $-$ $\{\mathcal{\epsilon}\} \subseteq$ FOLLOW ($B$)
+  \item if $A \to \alpha B$ then FOLLOW ($A$) $\subseteq$ FOLLOW ($B$)
+  \item if $A \to \alpha B \beta$ and FIRST ($\beta$) contains $\mathcal{\epsilon}$ then FOLLOW ($A$) $\subseteq$ FOLLOW ($B$)
+\end{enumerate}
 
 \end{document}
